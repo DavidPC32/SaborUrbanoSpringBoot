@@ -16,7 +16,7 @@ public class Comentario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idComentario;
+    private int idComentario;
 
     @Column(columnDefinition = "TEXT")
     private String textoComentario;

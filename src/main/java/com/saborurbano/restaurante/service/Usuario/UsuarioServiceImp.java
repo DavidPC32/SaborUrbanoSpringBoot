@@ -30,6 +30,12 @@ public class UsuarioServiceImp implements  UsuarioServiceInt {
         return usuarioRepository.findAll();
     }
 
+    @Override
+    public Usuarios getUsuarioId(Integer id){
+    return usuarioRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Error de Negocio: El usuario con ID " + id + " no existe."));
+    }
+
     @SuppressWarnings("null")
     @Override
     public void deleteUsuarios(Integer id, Usuarios usuarios) {
@@ -39,7 +45,7 @@ public class UsuarioServiceImp implements  UsuarioServiceInt {
         },
                 () -> {
 
-                    throw new IllegalArgumentException("El veterinario '" + usuarios.getNombreCompleto() + "' no existe.");
+                    throw new IllegalArgumentException("El Usuario '" + usuarios.getNombreCompleto() + "' no existe.");
                 });
     }
 

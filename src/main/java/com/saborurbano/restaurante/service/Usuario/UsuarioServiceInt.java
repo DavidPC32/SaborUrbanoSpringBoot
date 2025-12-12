@@ -9,6 +9,8 @@ public interface UsuarioServiceInt {
 
     public List<Usuarios> getAllUsuarios();
 
+    public Usuarios getUsuarioId(Integer id);
+
     public void deleteUsuarios(Integer id, Usuarios usuario);
     
 }
