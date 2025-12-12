@@ -17,6 +17,7 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCategoria;
 
+    @Column(nullable = false, length = 100, unique = true)
     private String nombreCategoria;
 
     // Relación OneToMany: Una Categoria tiene muchos Platillos

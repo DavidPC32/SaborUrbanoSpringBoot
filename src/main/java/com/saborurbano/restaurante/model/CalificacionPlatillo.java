@@ -16,8 +16,10 @@ public class CalificacionPlatillo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCalificacion;
 
+    @Column(nullable = false)
     private Integer puntuacion; // Asumiendo 1 a 5
 
+    @Column(nullable = false, length = 255)
     private String comentarioCorto;
 
     // Relación ManyToOne con Usuario (FK: id_usuario)

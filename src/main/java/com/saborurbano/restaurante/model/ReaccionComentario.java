@@ -14,8 +14,9 @@ public class ReaccionComentario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long idReaccion;
-
+    @Column(nullable = false, length = 100)
     private String tipoReaccion; // Ej: 'LIKE', 'UTIL', 'DISLIKE'
 
     // Relación ManyToOne con Comentario (FK: id_comentario)

@@ -17,11 +17,14 @@ public class Platillo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPlatillo;
 
+    @Column(nullable = false, length = 100, unique = true)
     private String nombre;
 
+
+    @Column(nullable = false, length = 100)
     private Double precio;
 
-   @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
