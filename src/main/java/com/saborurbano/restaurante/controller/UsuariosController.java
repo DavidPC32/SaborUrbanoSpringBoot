@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 
 @RequestMapping("api/usuarios")
@@ -52,7 +53,7 @@ public class UsuariosController {
         @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping
-    public ResponseEntity<Usuarios> createUsuario(@RequestBody Usuarios usuarios) {
+    public ResponseEntity<Usuarios> createUsuario(@Valid @RequestBody Usuarios usuarios) {
         Usuarios  nuevoUsuario = usuarioServiceImp.registrarUsuarios(usuarios);
         return new ResponseEntity<>(nuevoUsuario, HttpStatus.CREATED);
     }

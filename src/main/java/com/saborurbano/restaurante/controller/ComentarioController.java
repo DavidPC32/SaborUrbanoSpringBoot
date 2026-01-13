@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 
 
@@ -51,7 +52,7 @@ public class ComentarioController {
         @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping("/{idUsuario}")
-    public ResponseEntity<Comentario> crearComentario(@RequestBody Comentario comentario, @PathVariable Integer idUsuario) {
+    public ResponseEntity<Comentario> crearComentario(@Valid @RequestBody Comentario comentario, @PathVariable Integer idUsuario) {
         Comentario nuevoComentario = comentarioServiceImp.registrarComentario(comentario, idUsuario);
         return new ResponseEntity<>(nuevoComentario, HttpStatus.CREATED);
     }
