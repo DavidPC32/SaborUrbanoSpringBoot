@@ -44,8 +44,6 @@ public class UsuariosController {
         return usuarioServiceImp.getAllUsuarios();
     }
 
-
-
     @Operation(summary = "Crear un usuario", description = "Crea un nuevo usuario")
     @ApiResponses(value ={
         @ApiResponse(responseCode = "201", description = "Usuario creado correctamente"),

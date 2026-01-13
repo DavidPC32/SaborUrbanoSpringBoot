@@ -1,28 +1,35 @@
 package com.saborurbano.restaurante.service.Usuario;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.saborurbano.restaurante.dtos.UsuarioDtoCompleto;
+import com.saborurbano.restaurante.mapper.UsuarioMapper;
 import com.saborurbano.restaurante.model.Usuarios;
 import com.saborurbano.restaurante.repository.UsuariosRepository;
 
 
 @Service
 public class UsuarioServiceImp implements  UsuarioServiceInt {
-
+    @Autowired
     private final UsuariosRepository usuarioRepository;
+    @Autowired
+    private final UsuarioMapper usuarioMapper;
 
-    public UsuarioServiceImp(UsuariosRepository usuariosRepository) {
+    public UsuarioServiceImp(UsuariosRepository usuariosRepository, UsuarioMapper usuarioMapper) {
         this.usuarioRepository = usuariosRepository;
+        this.usuarioMapper = usuarioMapper;
     }
 
+
     @Override
-    public Usuarios registrarUsuarios(Usuarios usuarios) {
-        usuarioRepository.findById(usuarios.getId()).ifPresent(c -> {
+    public UsuarioDtoCompleto registrarUsuarios(UsuarioDtoCompleto dto) {
+        usuarioRepository.findById(dto.getId()).ifPresent(c -> {
             throw new IllegalArgumentException("El Veterinario '" + c.getNombreCompleto() + "' ya existe.");
         });
-        return usuarioRepository.save(usuarios);
-
+        Usuarios usuarioGuardado = usuarioRepository.save(usuarioMapper.toEntity(dto));
+        return usuarioMapper.toDTO(usuarioGuardado);
     }
 
     @Override

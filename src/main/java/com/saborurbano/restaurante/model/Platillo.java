@@ -33,7 +33,7 @@ public class Platillo {
     private Categoria categoria;
 
     @OneToMany(mappedBy = "platillo")
-    @JsonManagedReference("platillo")
+    @JsonManagedReference("platillo-calificaciones")
     private Set<CalificacionPlatillo> calificaciones;
 
     public Platillo(String nombre, Double precio, Categoria categoria) {

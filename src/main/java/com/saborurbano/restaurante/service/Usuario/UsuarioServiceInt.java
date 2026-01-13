@@ -1,11 +1,12 @@
 package com.saborurbano.restaurante.service.Usuario;
 import java.util.List;
 
+import com.saborurbano.restaurante.dtos.UsuarioDtoCompleto;
 import com.saborurbano.restaurante.model.Usuarios;
 
 public interface UsuarioServiceInt {
 
-    public Usuarios registrarUsuarios(Usuarios usuarios);
+    public UsuarioDtoCompleto registrarUsuarios(UsuarioDtoCompleto dto);
 
     public List<Usuarios> getAllUsuarios();
 
