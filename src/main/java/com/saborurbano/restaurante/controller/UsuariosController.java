@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.saborurbano.restaurante.model.Usuarios;
 import com.saborurbano.restaurante.service.Usuario.UsuarioServiceImp;
-
+import com.saborurbano.restaurante.dtos.UsuarioDtoCompleto;
+import com.saborurbano.restaurante.mapper.UsuarioMapperCompleto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -51,8 +52,8 @@ public class UsuariosController {
         @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping
-    public ResponseEntity<Usuarios> createUsuario(@Valid @RequestBody Usuarios usuarios) {
-        Usuarios  nuevoUsuario = usuarioServiceImp.registrarUsuarios(usuarios);
+    public ResponseEntity<UsuarioDtoCompleto> createUsuario(@Valid @RequestBody UsuarioDtoCompleto dto) {
+        UsuarioDtoCompleto nuevoUsuario = usuarioServiceImp.registrarUsuarios(dto);
         return new ResponseEntity<>(nuevoUsuario, HttpStatus.CREATED);
     }
 
