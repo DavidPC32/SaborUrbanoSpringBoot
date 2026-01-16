@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class ReaccionComentarioDto {
     private Long idReaccion;
     private String tipoReaccion;
-    private UsuarioBasicoDto usuario;
+    private UsuarioDto usuario;
 }

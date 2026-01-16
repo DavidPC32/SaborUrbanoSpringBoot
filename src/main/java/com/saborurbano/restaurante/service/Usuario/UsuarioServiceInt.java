@@ -1,17 +1,16 @@
 package com.saborurbano.restaurante.service.Usuario;
 import java.util.List;
 
-import com.saborurbano.restaurante.dtos.UsuarioDtoCompleto;
-import com.saborurbano.restaurante.model.Usuarios;
+import com.saborurbano.restaurante.dtos.UsuarioDto;
 
 public interface UsuarioServiceInt {
 
-    public UsuarioDtoCompleto registrarUsuarios(UsuarioDtoCompleto dto);
+    public UsuarioDto registrarUsuarios(UsuarioDto dto);
 
-    public List<Usuarios> getAllUsuarios();
+    public List<UsuarioDto> getAllUsuarios();
 
-    public Usuarios getUsuarioId(Integer id);
+    public UsuarioDto getUsuarioId(Integer id);
 
-    public void deleteUsuarios(Integer id, Usuarios usuario);
+    public void deleteUsuarios(Integer id);
     
 }

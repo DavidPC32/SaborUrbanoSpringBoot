@@ -11,6 +11,6 @@ public class CalificacionPlatilloDto {
     private Long idCalificacion;
     private Integer puntuacion;
     private String comentarioCorto;
-    private UsuarioBasicoDto usuario;
+    private UsuarioDto usuario;
     private PlatilloBasicoDto platillo;
 }

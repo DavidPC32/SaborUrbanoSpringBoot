@@ -1,14 +1,18 @@
 package com.saborurbano.restaurante.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
-import com.saborurbano.restaurante.dtos.UsuarioDtoCompleto;
+import com.saborurbano.restaurante.dtos.UsuarioDto;
 import com.saborurbano.restaurante.model.Usuarios;
 
 @Mapper(componentModel = "spring")
 public interface UsuarioMapper {
 
-    UsuarioDtoCompleto toDTO(Usuarios usuarios);
+    UsuarioDto toDTO(Usuarios usuarios);
 
-    Usuarios toEntity(UsuarioDtoCompleto usuarioDto);
+    Usuarios toEntity(UsuarioDto usuarioDto);
+
+    List<UsuarioDto> toDto(List<Usuarios> usuarios);
     
 }
