@@ -2,15 +2,15 @@ package com.saborurbano.restaurante.service.Platillo;
 
 import java.util.List;
 
-import com.saborurbano.restaurante.model.Platillo;
+import com.saborurbano.restaurante.dtos.PlatilloDto;
 
 public interface PlatilloServiceInt {
 
-    Platillo registrarPlatillo(Platillo platillo);
+    PlatilloDto registrarPlatillo(PlatilloDto platillo, Long idCategoria);
 
-    List<Platillo> getAllPlatillos();
+    List<PlatilloDto> getAllPlatillos();
 
-    Platillo getPlatilloById(Long id);
+    PlatilloDto getPlatilloById(Long id);
 
     void deletePlatillo(Long id);
 }

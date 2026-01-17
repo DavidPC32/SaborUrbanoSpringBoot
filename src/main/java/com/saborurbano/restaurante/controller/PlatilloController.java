@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.saborurbano.restaurante.model.Platillo;
+import com.saborurbano.restaurante.dtos.PlatilloDto;
 import com.saborurbano.restaurante.service.Platillo.PlatilloServiceInt;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,43 +28,44 @@ public class PlatilloController {
 
     @Operation(summary = "Obtener todos los platillos", description = "Devuelve una lista de todos los platillos")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Devuelve una lista de platillos"),
-        @ApiResponse(responseCode = "400", description = "Error del cliente"),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(responseCode = "200", description = "Devuelve una lista de platillos"),
+            @ApiResponse(responseCode = "400", description = "Error del cliente"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping
-    public List<Platillo> getAllPlatillos() {
-        return platilloServiceInt.getAllPlatillos();
+    public ResponseEntity<List<PlatilloDto>> getAllPlatillos() {
+        return ResponseEntity.ok(platilloServiceInt.getAllPlatillos());
     }
 
     @Operation(summary = "Obtener un platillo por su id", description = "Devuelve un platillo con el id especificado")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Devuelve un platillo con el id especificado"),
-        @ApiResponse(responseCode = "400", description = "Error del cliente"),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(responseCode = "200", description = "Devuelve un platillo con el id especificado"),
+            @ApiResponse(responseCode = "400", description = "Error del cliente"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping("/{id}")
-    public Platillo getPlatilloById(@PathVariable Long id) {
-        return platilloServiceInt.getPlatilloById(id);
+    public ResponseEntity<PlatilloDto> getPlatilloById(@PathVariable Long id) {
+        return ResponseEntity.ok(platilloServiceInt.getPlatilloById(id));
     }
 
     @Operation(summary = "Crear un platillo", description = "Crea un nuevo platillo")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Platillo creado correctamente"),
-        @ApiResponse(responseCode = "400", description = "Error del cliente"),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(responseCode = "201", description = "Platillo creado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Error del cliente"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    @PostMapping
-    public ResponseEntity<Platillo> createPlatillo(@Valid @RequestBody Platillo platillo) {
-        Platillo nuevoPlatillo = platilloServiceInt.registrarPlatillo(platillo);
+    @PostMapping("/{idCategoria}")
+    public ResponseEntity<PlatilloDto> createPlatillo(@Valid @RequestBody PlatilloDto platillo,
+            @PathVariable Long idCategoria) {
+        PlatilloDto nuevoPlatillo = platilloServiceInt.registrarPlatillo(platillo, idCategoria);
         return new ResponseEntity<>(nuevoPlatillo, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Eliminar un platillo", description = "Elimina un platillo con el id especificado")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Platillo eliminado correctamente"),
-        @ApiResponse(responseCode = "400", description = "Error del cliente"),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(responseCode = "200", description = "Platillo eliminado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Error del cliente"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePlatillo(@PathVariable Long id) {

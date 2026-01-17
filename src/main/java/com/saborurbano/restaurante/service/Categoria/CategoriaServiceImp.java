@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.saborurbano.restaurante.dtos.CategoriaBasicoDto;
+import com.saborurbano.restaurante.mapper.CategoriaMapper;
 import com.saborurbano.restaurante.model.Categoria;
 import com.saborurbano.restaurante.repository.CategoriaRepository;
 
@@ -11,19 +13,21 @@ import com.saborurbano.restaurante.repository.CategoriaRepository;
 public class CategoriaServiceImp implements CategoriaServiceInt {
 
     private final CategoriaRepository categoriaRepository;
+    private final CategoriaMapper categoriaMapper;
 
-    public CategoriaServiceImp(CategoriaRepository categoriaRepository) {
+    public CategoriaServiceImp(CategoriaRepository categoriaRepository, CategoriaMapper categoriaMapper) {
         this.categoriaRepository = categoriaRepository;
+        this.categoriaMapper = categoriaMapper;
     }
 
     @Override
-    public Categoria registrarCategoria(Categoria categoria) {
+    public CategoriaBasicoDto registrarCategoria(CategoriaBasicoDto categoriaDto) {
 
-        if (categoria == null) {
+        if (categoriaDto == null) {
             throw new IllegalArgumentException("La categoria no puede ser null.");
         }
 
-        String nombre = categoria.getNombreCategoria();
+        String nombre = categoriaDto.getNombreCategoria();
         if (nombre == null) {
             throw new IllegalArgumentException("El nombre de la categoria es obligatorio.");
         }
@@ -38,29 +42,36 @@ public class CategoriaServiceImp implements CategoriaServiceInt {
         }
 
         // Normalización
-        categoria.setNombreCategoria(nombre);
+        categoriaDto.setNombreCategoria(nombre);
 
         // Regla: no duplicados
         if (categoriaRepository.existsByNombreCategoria(nombre)) {
             throw new IllegalArgumentException("Ya existe una categoria con el nombre: " + nombre);
         }
 
-        return categoriaRepository.save(categoria);
+        Categoria categoria = categoriaMapper.toEntity(categoriaDto);
+        Categoria categoriaGuardada = categoriaRepository.save(categoria);
+        return categoriaMapper.toDTO(categoriaGuardada);
     }
 
     @Override
-    public List<Categoria> getAllCategorias() {
-        return categoriaRepository.findAll();
+    public List<CategoriaBasicoDto> getAllCategorias() {
+        List<Categoria> categorias = categoriaRepository.findAll();
+        return categorias.stream()
+                .map(categoriaMapper::toDTO)
+                .toList();
     }
 
     @Override
-    public Categoria getCategoriaById(Long id) {
+    public CategoriaBasicoDto getCategoriaById(Long id) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("El id de categoria es inválido.");
         }
 
-        return categoriaRepository.findById(id)
+        Categoria categoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No existe la categoria con ID " + id));
+
+        return categoriaMapper.toDTO(categoria);
     }
 
     @Override

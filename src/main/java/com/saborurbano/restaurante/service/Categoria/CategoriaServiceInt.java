@@ -1,15 +1,15 @@
 package com.saborurbano.restaurante.service.Categoria;
 
 import java.util.List;
-import com.saborurbano.restaurante.model.Categoria;
+import com.saborurbano.restaurante.dtos.CategoriaBasicoDto;
 
 public interface CategoriaServiceInt {
 
-    Categoria registrarCategoria(Categoria categoria);
+    CategoriaBasicoDto registrarCategoria(CategoriaBasicoDto categoria);
 
-    List<Categoria> getAllCategorias();
+    List<CategoriaBasicoDto> getAllCategorias();
 
-    Categoria getCategoriaById(Long id);
+    CategoriaBasicoDto getCategoriaById(Long id);
 
     void deleteCategoria(Long id);
 }

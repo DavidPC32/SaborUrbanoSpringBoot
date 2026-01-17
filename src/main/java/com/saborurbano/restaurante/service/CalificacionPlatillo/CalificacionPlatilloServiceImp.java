@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.saborurbano.restaurante.dtos.CalificacionPlatilloDto;
+import com.saborurbano.restaurante.mapper.CalificacionPlatilloMapper;
 import com.saborurbano.restaurante.model.CalificacionPlatillo;
 import com.saborurbano.restaurante.model.Platillo;
 import com.saborurbano.restaurante.model.Usuarios;
@@ -17,21 +19,24 @@ public class CalificacionPlatilloServiceImp implements CalificacionPlatilloServi
     private final CalificacionPlatilloRepository calificacionRepository;
     private final UsuariosRepository usuariosRepository;
     private final PlatilloRepository platilloRepository;
+    private final CalificacionPlatilloMapper calificacionMapper;
 
     public CalificacionPlatilloServiceImp(
             CalificacionPlatilloRepository calificacionRepository,
             UsuariosRepository usuariosRepository,
-            PlatilloRepository platilloRepository
-    ) {
+            PlatilloRepository platilloRepository,
+            CalificacionPlatilloMapper calificacionMapper) {
         this.calificacionRepository = calificacionRepository;
         this.usuariosRepository = usuariosRepository;
         this.platilloRepository = platilloRepository;
+        this.calificacionMapper = calificacionMapper;
     }
 
     @Override
-    public CalificacionPlatillo registrarCalificacion(CalificacionPlatillo calificacion, Integer idUsuario, Long idPlatillo) {
+    public CalificacionPlatilloDto registrarCalificacion(CalificacionPlatilloDto calificacionDto, Integer idUsuario,
+            Long idPlatillo) {
 
-        if (calificacion == null) {
+        if (calificacionDto == null) {
             throw new IllegalArgumentException("La calificacion no puede ser null.");
         }
 
@@ -44,7 +49,7 @@ public class CalificacionPlatilloServiceImp implements CalificacionPlatilloServi
         }
 
         // Validación puntuación
-        Integer puntuacion = calificacion.getPuntuacion();
+        Integer puntuacion = calificacionDto.getPuntuacion();
         if (puntuacion == null) {
             throw new IllegalArgumentException("La puntuacion es obligatoria.");
         }
@@ -53,13 +58,13 @@ public class CalificacionPlatilloServiceImp implements CalificacionPlatilloServi
         }
 
         // Validación comentario (opcional)
-        String comentario = calificacion.getComentarioCorto();
+        String comentario = calificacionDto.getComentarioCorto();
         if (comentario != null) {
             comentario = comentario.trim();
             if (comentario.length() > 255) {
                 throw new IllegalArgumentException("El comentario no puede superar 255 caracteres.");
             }
-            calificacion.setComentarioCorto(comentario);
+            calificacionDto.setComentarioCorto(comentario);
         }
 
         Usuarios usuario = usuariosRepository.findById(idUsuario)
@@ -73,25 +78,33 @@ public class CalificacionPlatilloServiceImp implements CalificacionPlatilloServi
             throw new IllegalArgumentException("El usuario ya calificó este platillo.");
         }
 
+        CalificacionPlatillo calificacion = calificacionMapper.toEntity(calificacionDto);
+        calificacion.setIdCalificacion(null); // Asegurar que es un nuevo registro
         calificacion.setUsuario(usuario);
         calificacion.setPlatillo(platillo);
 
-        return calificacionRepository.save(calificacion);
+        CalificacionPlatillo calificacionGuardada = calificacionRepository.save(calificacion);
+        return calificacionMapper.toDTO(calificacionGuardada);
     }
 
     @Override
-    public List<CalificacionPlatillo> getAllCalificaciones() {
-        return calificacionRepository.findAll();
+    public List<CalificacionPlatilloDto> getAllCalificaciones() {
+        List<CalificacionPlatillo> calificaciones = calificacionRepository.findAll();
+        return calificaciones.stream()
+                .map(calificacionMapper::toDTO)
+                .toList();
     }
 
     @Override
-    public CalificacionPlatillo getCalificacionById(Long id) {
+    public CalificacionPlatilloDto getCalificacionById(Long id) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("El id de calificacion es inválido.");
         }
 
-        return calificacionRepository.findById(id)
+        CalificacionPlatillo calificacion = calificacionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No existe la calificacion con ID " + id));
+
+        return calificacionMapper.toDTO(calificacion);
     }
 
     @Override

@@ -3,10 +3,12 @@ package com.saborurbano.restaurante.mapper;
 import java.util.List;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import com.saborurbano.restaurante.dtos.UsuarioDto;
 import com.saborurbano.restaurante.model.Usuarios;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UsuarioMapper {
 
     UsuarioDto toDTO(Usuarios usuarios);
@@ -14,5 +16,5 @@ public interface UsuarioMapper {
     Usuarios toEntity(UsuarioDto usuarioDto);
 
     List<UsuarioDto> toDto(List<Usuarios> usuarios);
-    
+
 }

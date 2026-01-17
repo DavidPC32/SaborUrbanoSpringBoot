@@ -2,15 +2,15 @@ package com.saborurbano.restaurante.service.ReaccionComentario;
 
 import java.util.List;
 
-import com.saborurbano.restaurante.model.ReaccionComentario;
+import com.saborurbano.restaurante.dtos.ReaccionComentarioDto;
 
 public interface ReaccionComentarioServiceInt {
 
-    ReaccionComentario registrarReaccion(ReaccionComentario reaccion);
+    ReaccionComentarioDto registrarReaccion(ReaccionComentarioDto reaccion, Integer idUsuario, Integer idComentario);
 
-    List<ReaccionComentario> getAllReacciones();
+    List<ReaccionComentarioDto> getAllReacciones();
 
-    ReaccionComentario getReaccionById(Long id);
+    ReaccionComentarioDto getReaccionById(Long id);
 
     void deleteReaccion(Long id);
 }

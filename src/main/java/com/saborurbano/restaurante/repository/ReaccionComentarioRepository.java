@@ -8,4 +8,5 @@ import com.saborurbano.restaurante.model.ReaccionComentario;
 @Repository
 public interface ReaccionComentarioRepository extends JpaRepository<ReaccionComentario, Long> {
     boolean existsByComentarioIdComentarioAndUsuarioId(Integer idComentario, Integer idUsuario);
+
 }

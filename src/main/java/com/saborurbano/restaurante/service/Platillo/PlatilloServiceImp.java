@@ -3,26 +3,36 @@ package com.saborurbano.restaurante.service.Platillo;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import com.saborurbano.restaurante.dtos.PlatilloDto;
+import com.saborurbano.restaurante.mapper.PlatilloMapper;
 import com.saborurbano.restaurante.model.Platillo;
+import com.saborurbano.restaurante.model.Categoria;
 import com.saborurbano.restaurante.repository.PlatilloRepository;
+import com.saborurbano.restaurante.repository.CategoriaRepository;
 
 @Service
 public class PlatilloServiceImp implements PlatilloServiceInt {
 
     private final PlatilloRepository platilloRepository;
+    private final PlatilloMapper platilloMapper;
+    private final CategoriaRepository categoriaRepository;
 
-    public PlatilloServiceImp(PlatilloRepository platilloRepository) {
+    public PlatilloServiceImp(PlatilloRepository platilloRepository, PlatilloMapper platilloMapper,
+            CategoriaRepository categoriaRepository) {
         this.platilloRepository = platilloRepository;
+        this.platilloMapper = platilloMapper;
+        this.categoriaRepository = categoriaRepository;
     }
 
     @Override
-    public Platillo registrarPlatillo(Platillo platillo) {
+    public PlatilloDto registrarPlatillo(PlatilloDto platilloDto, Long idCategoria) {
 
-        if (platillo == null) {
+        if (platilloDto == null) {
             throw new IllegalArgumentException("El platillo no puede ser null.");
         }
 
-        String nombre = platillo.getNombre();
+        String nombre = platilloDto.getNombre();
         if (nombre == null) {
             throw new IllegalArgumentException("El nombre del platillo es obligatorio.");
         }
@@ -36,33 +46,42 @@ public class PlatilloServiceImp implements PlatilloServiceInt {
             throw new IllegalArgumentException("El nombre del platillo debe tener entre 3 y 100 caracteres.");
         }
 
-        if (platillo.getPrecio() == null || platillo.getPrecio() <= 0) {
+        if (platilloDto.getPrecio() == null || platilloDto.getPrecio() <= 0) {
             throw new IllegalArgumentException("El precio del platillo debe ser mayor a 0.");
         }
 
-        if (platillo.getCategoria() == null) {
-            throw new IllegalArgumentException("El platillo debe tener una categoria asignada.");
-        }
+        Categoria categoria = categoriaRepository.findById(idCategoria)
+                .orElseThrow(() -> new RuntimeException("No existe la categoría con ID " + idCategoria));
 
         // Normalización
-        platillo.setNombre(nombre);
+        platilloDto.setNombre(nombre);
 
-        return platilloRepository.save(platillo);
+        Platillo platillo = platilloMapper.toEntity(platilloDto);
+        platillo.setIdPlatillo(null); // Asegurar que es un nuevo registro
+        platillo.setCategoria(categoria);
+
+        Platillo platilloGuardado = platilloRepository.save(platillo);
+        return platilloMapper.toDTO(platilloGuardado);
     }
 
     @Override
-    public List<Platillo> getAllPlatillos() {
-        return platilloRepository.findAll();
+    public List<PlatilloDto> getAllPlatillos() {
+        List<Platillo> platillos = platilloRepository.findAll();
+        return platillos.stream()
+                .map(platilloMapper::toDTO)
+                .toList();
     }
 
     @Override
-    public Platillo getPlatilloById(Long id) {
+    public PlatilloDto getPlatilloById(Long id) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("El id del platillo es inválido.");
         }
 
-        return platilloRepository.findById(id)
+        Platillo platillo = platilloRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No existe el platillo con ID " + id));
+
+        return platilloMapper.toDTO(platillo);
     }
 
     @Override
