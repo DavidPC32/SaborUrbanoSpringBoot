@@ -3,8 +3,8 @@ package com.saborurbano.restaurante.mapper;
 import java.util.List;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+
 import com.saborurbano.restaurante.dtos.UsuarioDto;
 import com.saborurbano.restaurante.model.Usuarios;
 

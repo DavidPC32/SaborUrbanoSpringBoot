@@ -13,5 +13,7 @@ public interface CalificacionPlatilloServiceInt {
 
     CalificacionPlatilloDto getCalificacionById(Long id);
 
+    CalificacionPlatilloDto getCalificacionByUsuarioId(Long idUsuario);
+
     void deleteCalificacion(Long id);
 }

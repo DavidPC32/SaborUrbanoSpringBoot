@@ -4,7 +4,7 @@
 
 **Sabor Urbano** es una API REST desarrollada en **Spring Boot** que forma parte del **Momento 3** de mi proyecto escolar colaborativo. Esta aplicación permite gestionar información de un restaurante, incluyendo usuarios, platillos, categorías, comentarios y calificaciones.
 
-La API está diseñada para integrarse con un proyecto complementario en **Python** que se encargará del análisis de datos.
+La API está diseñada para integrarse con un proyecto complementario en **Python** que se encargará del análisis de datos para esto se deben rellenar la base de datos con el sql que esta en el archivo BASE_DE_DATOS.MD .
 
 ## 🎯 Funcionalidades Principales
 
@@ -12,6 +12,7 @@ La API está diseñada para integrarse con un proyecto complementario en **Pytho
 
 - Registro y consulta de usuarios.
 - Historial de actividad (comentarios y calificaciones).
+- Eliminar usuarios por el ID
 
 ### 🍽️ Gestión de Menú
 
@@ -48,6 +49,7 @@ Asegúrate de tener instalado:
    spring.datasource.username=TU_USUARIO_SQL  (ej: sa)
    spring.datasource.password=TU_CONTRASEÑA   (ej: 123456)
    ```
+4. Llena los datos en tu base de datos al Ejecutar el sql del archivo BASE_DE_DATOS.MD
 
 ### 3. Ejecutar la Aplicación
 

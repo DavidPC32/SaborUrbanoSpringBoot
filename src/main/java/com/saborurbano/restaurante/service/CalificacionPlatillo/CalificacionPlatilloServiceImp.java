@@ -107,6 +107,20 @@ public class CalificacionPlatilloServiceImp implements CalificacionPlatilloServi
         return calificacionMapper.toDTO(calificacion);
     }
 
+    //Se crea obtener calificaciones con el id de los usuarios retornando todos los comentarios hechos por un usuario especifico
+    @Override
+    public CalificacionPlatilloDto getCalificacionByUsuarioId(Long idUsuario) {
+        if (idUsuario == null || idUsuario <= 0) {
+            throw new IllegalArgumentException("El id de calificacion es inválido.");
+        }
+
+         CalificacionPlatillo calificacion = calificacionRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("No existen calificaciones por parte del usuario con id  " + idUsuario));
+
+        return calificacionMapper.toDTO(calificacion);
+        
+    }
+
     @Override
     public void deleteCalificacion(Long id) {
         if (id == null || id <= 0) {
