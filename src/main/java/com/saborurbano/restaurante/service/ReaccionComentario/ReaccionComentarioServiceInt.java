@@ -12,5 +12,7 @@ public interface ReaccionComentarioServiceInt {
 
     ReaccionComentarioDto getReaccionById(Long id);
 
+    List<ReaccionComentarioDto> getReaccionByUsuarioId(Integer idUsuario);
+
     void deleteReaccion(Long id);
 }

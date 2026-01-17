@@ -4,7 +4,13 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.saborurbano.restaurante.dtos.ReaccionComentarioDto;
 import com.saborurbano.restaurante.service.ReaccionComentario.ReaccionComentarioServiceImp;
@@ -61,6 +67,17 @@ public class ReaccionComentarioController {
         ReaccionComentarioDto nuevaReaccion = reaccionComentarioServiceImp.registrarReaccion(reaccion, idUsuario,
                 idComentario);
         return new ResponseEntity<>(nuevaReaccion, HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Obtener reacciones de comentarios por usuario", description = "Devuelve todas las reacciones hechas por un usuario específico")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Devuelve una lista de reacciones del usuario"),
+            @ApiResponse(responseCode = "400", description = "Error del cliente"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<ReaccionComentarioDto>> getReaccionesByUsuario(@PathVariable Integer idUsuario) {
+        return ResponseEntity.ok(reaccionComentarioServiceImp.getReaccionByUsuarioId(idUsuario));
     }
 
     @Operation(summary = "Eliminar una reacción de comentario", description = "Elimina una reacción de comentario con el id especificado")

@@ -75,6 +75,7 @@ public class ReaccionComentarioServiceImp implements ReaccionComentarioServiceIn
         reaccionDto.setTipoReaccion(tipoReaccion.toUpperCase());
 
         ReaccionComentario reaccion = reaccionMapper.toEntity(reaccionDto);
+        reaccion.setIdReaccion(null); // Asegurar que es un nuevo registro
         reaccion.setUsuario(usuario);
         reaccion.setComentario(comentario);
 
@@ -100,6 +101,23 @@ public class ReaccionComentarioServiceImp implements ReaccionComentarioServiceIn
                 .orElseThrow(() -> new RuntimeException("No existe la reacción con ID " + id));
 
         return reaccionMapper.toDTO(reaccion);
+    }
+
+    @Override
+    public List<ReaccionComentarioDto> getReaccionByUsuarioId(Integer idUsuario) {
+        if (idUsuario == null || idUsuario <= 0) {
+            throw new IllegalArgumentException("El id de usuario es inválido.");
+        }
+        
+        List<ReaccionComentario> reacciones = reaccionComentarioRepository.findByUsuarioId(idUsuario);
+        
+        if (reacciones.isEmpty()) {
+            throw new RuntimeException("No existen reacciones por parte del usuario con id " + idUsuario);
+        }
+
+        return reacciones.stream()
+                .map(reaccionMapper::toDTO)
+                .toList();
     }
 
     @Override
